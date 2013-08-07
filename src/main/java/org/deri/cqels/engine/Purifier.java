@@ -1,0 +1,14 @@
+package org.deri.cqels.engine;
+import java.util.TimerTask;
+public class Purifier extends TimerTask {
+	RangeWindow w;
+	public Purifier(RangeWindow w) {
+		this.w = w;
+	}
+	
+	@Override
+	public void run() {
+		String message = "purge by slide at thread: " + Thread.currentThread().getId();
+		w.purge(w.getDuration() - w.getSlide(), message);
+	}
+}
