@@ -8,12 +8,12 @@ public class TimerVisitor implements RouterVisitor{
 	}
 
 	public void visit(IndexedTripleRouter router) {
-		Window w = router.getWindow();
-		if (w instanceof RangeWindow) {
-			Purifier p = new Purifier((RangeWindow)w);
-			if (((RangeWindow)w).getSlide() > 0)
-				((RangeWindow) w).enableSlidePurifier(p);
-		}
+//		Window w = router.getWindow();
+//		if (w instanceof RangeWindow) {
+//			Purifier p = new Purifier((RangeWindow)w);
+//			if (((RangeWindow)w).getSlide() > 0)
+//				((RangeWindow) w).enableSlidePurifier(p);
+//		}
 	}
 
 	public void visit(ProjectRouter router) {

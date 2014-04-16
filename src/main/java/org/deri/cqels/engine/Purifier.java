@@ -9,6 +9,13 @@ public class Purifier extends TimerTask {
 	@Override
 	public void run() {
 		String message = "purge by slide at thread: " + Thread.currentThread().getId();
-		w.purge(w.getDuration() - w.getSlide(), message);
+		//System.out.println(message);
+		//Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+		try {
+			w.purge(w.getDuration() - w.getSlide(), message);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 }

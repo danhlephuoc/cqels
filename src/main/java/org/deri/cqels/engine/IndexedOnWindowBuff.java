@@ -1,6 +1,7 @@
 package org.deri.cqels.engine;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import org.deri.cqels.data.EnQuad;
 import org.deri.cqels.data.Mapping;
@@ -53,7 +54,7 @@ public class IndexedOnWindowBuff {
 		DatabaseConfig dbConfig = new DatabaseConfig();
 		dbConfig.setAllowCreate(true);
 		dbConfig.setTemporary(true);
-		//dbConfig.setTransactional(true);
+	    //dbConfig.setTransactional(true);
 		buff = context.env().openDatabase(null, "pri_synopsis_" + router.getId(), dbConfig);
 		//System.out.println("ttrans "+dbConfig.getTransactional());
 		initIndexes();
@@ -108,7 +109,6 @@ public class IndexedOnWindowBuff {
 		if(quad.getObject().isVariable()) {
 			out.writeLong(enQuad.getOID());
 		}
-		
 		buff.put(null, key, new DatabaseEntry(out.getBufferBytes()));
 	}
 	

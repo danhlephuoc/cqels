@@ -63,7 +63,6 @@ public class IndexedTripleRouter extends OpRouterBase {
 		//Add to indexed buff
 		w.purge();
 		buff.add(enQuad);
-
 		//forward to upper operator
 		//System.out.println(context.op2Id(getOp())+" s "+enQuad.getSID() +"-"+enQuad.getOID());
 		HashMap<Var, Long> hMap = new HashMap<Var,Long>();

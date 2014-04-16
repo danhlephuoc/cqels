@@ -21,16 +21,18 @@ import com.sleepycat.je.OperationStatus;
  * @email   chan.levan@deri.org
  */
 public class RangeWindow implements Window {
-	Database buff;
+	volatile Database buff;
     long w;
     long slide;
     long wInMili;
     long sInMili;
     long lastTimestamp = -1;
     Timer timer;
+    long timeout = 3600000;
+    long start  = -1;
     public RangeWindow( long w) {
     	this.w = w;
-		timer = new Timer();    	
+		timer = new Timer();  
     }
     
     public RangeWindow(long w, long slide) {
@@ -38,7 +40,7 @@ public class RangeWindow implements Window {
     	this.slide = slide;
     	this.wInMili = (long)(this.w / 1E6);
 		this.sInMili = (long)(this.slide / 1E6);
-		timer = new Timer();    	
+		timer = new Timer();    
     }
 	
 	public RangeWindow(DurationSet durations, Duration slideDuration) {
@@ -70,46 +72,55 @@ public class RangeWindow implements Window {
 	public long getDuration() {
 		return (long)(this.w);
 	}
-	
+
 	public void purge(long timeRange, String message) {
 		long curTime = System.nanoTime();
-		//System.out.println(message + ", lasttime: " + lastTimestamp + " time range: " + timeRange + " curTime - time Range: " + (curTime - timeRange));
 		if(lastTimestamp > 0 && lastTimestamp < curTime - timeRange) {
-			//System.out.println(message + ": actually purge 2, buffercode: " + buff.hashCode());
-			synchronized (buff) {
-				Cursor cursor = buff.openCursor(null, CursorConfig.DEFAULT);
-				DatabaseEntry key = new DatabaseEntry();
-				DatabaseEntry data = new DatabaseEntry();
-				long tmp;
-				while(cursor.getNext(key, data, LockMode.DEFAULT) == OperationStatus.SUCCESS) {
-					//System.out.println(message + ": actually purge 3");
-					tmp = LongBinding.entryToLong(key);
-					if(tmp < (curTime - timeRange)) {
-						//System.out.println(message + ": actually purge 4");
-						cursor.delete();
-						//System.out.println("purge" +lastTimestamp + " cur"+curTime+ " "+(curTime-w));
-					}
-					else {
-						cursor.close();
-						lastTimestamp = tmp;
-						report(curTime);
-						return;
-					}
+			Cursor cursor = buff.openCursor(null, CursorConfig.DEFAULT);
+			DatabaseEntry key = new DatabaseEntry();
+			DatabaseEntry data = new DatabaseEntry();
+			long tmp;
+			while(cursor.getNext(key, data, LockMode.DEFAULT) == OperationStatus.SUCCESS) {
+				tmp = LongBinding.entryToLong(key);
+				if(tmp < (curTime - timeRange)) {
+					cursor.delete();
+					//System.out.println("purge" +lastTimestamp + " cur"+curTime+ " "+(curTime-w));
 				}
-				cursor.close();
-				lastTimestamp = -1;
+				else {
+					cursor.close();
+					lastTimestamp = tmp;
+					report(curTime);
+					System.out.println("Return as else");
+					return;
+				}
 			}
+			System.out.println("Return as closed");
+			cursor.close();
+			lastTimestamp = -1;
 		}
-		report(curTime);		
+		report(curTime);	
 	}
 	
-	public synchronized void purge() {
-		String message = "purge by DURATION";
-		purge(this.w, message);
+	public void purge() {
+		if (slide  == 0) {
+			String message = "purge by DURATION";
+			purge(this.w, message);
+		} else {
+			String message = "purge by slide";
+			if (System.nanoTime() - start >= slide) {
+				purge(this.w, message);
+				start = System.nanoTime();
+			}
+
+		}
 	}
+
 	public void reportLatestTime(long t) {
 		if(lastTimestamp < 0) {
 			lastTimestamp = t;
+		}
+		if (start < 0) {
+			start = t;
 		}
 	}
 	
