@@ -3,7 +3,7 @@ package org.deri.cqels.engine;
 public class TimerVisitor implements RouterVisitor{
 
 	public void visit(JoinRouter router) {
-		System.out.println("Hello JoinRouter");
+		//System.out.println("Hello JoinRouter");
 		
 	}
 
