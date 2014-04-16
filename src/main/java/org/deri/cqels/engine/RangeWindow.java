@@ -33,6 +33,7 @@ public class RangeWindow implements Window {
     public RangeWindow( long w) {
     	this.w = w;
 		timer = new Timer();  
+		slide = 0;
     }
     
     public RangeWindow(long w, long slide) {
@@ -75,6 +76,7 @@ public class RangeWindow implements Window {
 
 	public void purge(long timeRange, String message) {
 		long curTime = System.nanoTime();
+		//System.out.println(message);
 		if(lastTimestamp > 0 && lastTimestamp < curTime - timeRange) {
 			Cursor cursor = buff.openCursor(null, CursorConfig.DEFAULT);
 			DatabaseEntry key = new DatabaseEntry();
