@@ -26,6 +26,7 @@ import com.hp.hpl.jena.tdb.solver.OpExecutorTDB;
 import com.hp.hpl.jena.tdb.store.DatasetGraphTDB;
 import com.hp.hpl.jena.tdb.store.bulkloader.BulkLoader;
 import com.hp.hpl.jena.tdb.sys.SystemTDB;
+import com.hp.hpl.jena.tdb.transaction.DatasetGraphTransaction;
 
 import com.sleepycat.je.Environment;
 import com.sleepycat.je.EnvironmentConfig;
@@ -59,7 +60,7 @@ public class ExecContext {
 		//combine cache and disk-based dictionary
 		this.dictionary = new NodeTableNative(IndexBuilder.mem().newIndex(FileSet.mem(), 
 											  		SystemTDB.nodeRecordFactory), 
-											  FileFactory.createObjectFileMem());
+											  FileFactory.createObjectFileMem(path));
 		setEngine(new CQELSEngine(this));
 		createCache(path + "/cache");
 		if (cleanDataset) {
@@ -106,7 +107,7 @@ public class ExecContext {
 	 * @param location the specified location string
 	 */
 	public void createDataSet(String location) {
-		this.dataset = TDBFactory.createDatasetGraph(location);
+		this.dataset = ((DatasetGraphTransaction)TDBFactory.createDatasetGraph(location)).getBaseDatasetGraph();
 		this.arqExCtx = new ExecutionContext(this.dataset.getContext(), 
 											this.dataset.getDefaultGraph(), 
 											this.dataset, OpExecutorTDB.OpExecFactoryTDB);
@@ -127,7 +128,7 @@ public class ExecContext {
 	 * @param dataUri 
 	 */
 	public void loadDefaultDataset(String dataUri) {
-		BulkLoader.loadDefaultGraph(this.dataset, Arrays.asList(dataUri) , false);
+		BulkLoader.loadDefaultGraph(this.dataset, Arrays.asList(dataUri) , true);
 	}
 	
 	/**
@@ -198,7 +199,8 @@ public class ExecContext {
 	 * @param directory  
 	 */
 	public void initTDBGraph(String directory) { 
-		this.dataset = TDBFactory.createDatasetGraph(directory);
+		//this.dataset = TDBFactory.createDatasetGraph(directory);
+		this.dataset = ((DatasetGraphTransaction)TDBFactory.createDatasetGraph(location)).getBaseDatasetGraph();
 	}
 	
 	/**

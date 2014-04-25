@@ -92,11 +92,9 @@ public class RangeWindow implements Window {
 					cursor.close();
 					lastTimestamp = tmp;
 					report(curTime);
-					//System.out.println("Return as else");
 					return;
 				}
 			}
-			//System.out.println("Return as closed");
 			cursor.close();
 			lastTimestamp = -1;
 		}

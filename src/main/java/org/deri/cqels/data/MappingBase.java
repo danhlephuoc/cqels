@@ -8,11 +8,8 @@ import java.util.Set;
 
 import org.deri.cqels.engine.ExecContext;
 import org.deri.cqels.engine.OpRouter;
-import org.openjena.atlas.iterator.IteratorConcat;
 
-import com.hp.hpl.jena.sparql.algebra.Op;
 import com.hp.hpl.jena.sparql.core.Var;
-import com.hp.hpl.jena.tdb.store.NodeId;
 import com.hp.hpl.jena.util.iterator.NullIterator;
 
 public  abstract class MappingBase implements Mapping {
