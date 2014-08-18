@@ -8,11 +8,29 @@
   <packaging>jar</packaging>
 
   <name>cqelsserver</name>
+  
   <url>http://maven.apache.org</url>
-
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+	<build>
+	  <plugins>
+         <plugin>
+              <artifactId>maven-assembly-plugin</artifactId>
+              <configuration>
+                  <descriptorRefs>
+                      <descriptorRef>jar-with-dependencies</descriptorRef>
+                  </descriptorRefs>
+              </configuration>
+              <executions>
+                  <execution>
+                      <id>make-my-jar-with-dependencies</id>
+                      <phase>package</phase>
+                      <goals>
+                          <goal>single</goal>
+                      </goals>
+                  </execution>
+              </executions>
+          </plugin>
+	  </plugins>
+	</build>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -45,26 +63,10 @@
 		<artifactId>commons-math</artifactId>
 		<version>2.2</version>
 	</dependency>  
+	<dependency>
+	    <groupId>xml-apis</groupId>
+	    <artifactId>xml-apis</artifactId>
+	    <version>1.4.01</version>
+	</dependency>	
   </dependencies>
-	<build>
-	  <plugins>
-         <plugin>
-              <artifactId>maven-assembly-plugin</artifactId>
-              <configuration>
-                  <descriptorRefs>
-                      <descriptorRef>jar-with-dependencies</descriptorRef>
-                  </descriptorRefs>
-              </configuration>
-              <executions>
-                  <execution>
-                      <id>make-my-jar-with-dependencies</id>
-                      <phase>package</phase>
-                      <goals>
-                          <goal>single</goal>
-                      </goals>
-                  </execution>
-              </executions>
-          </plugin>
-	  </plugins>
-	</build>  
  </project>
