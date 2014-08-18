@@ -28,13 +28,13 @@ public class TripleWindow implements Window {
 		
 		long count = buff.count();
 		//System.out.println("c "+count);
-		if(count > t) {
+		if(count >= t) {
 			long curT = System.nanoTime();
 			Cursor cursor = buff.openCursor(null, CursorConfig.DEFAULT);
 			DatabaseEntry key = new DatabaseEntry(new byte[0]);
 			DatabaseEntry data = new DatabaseEntry(new byte[0]);
-			while(count-- > t && (cursor.getNext(key, data, LockMode.DEFAULT) 
-								  != OperationStatus.SUCCESS)) {
+			while(count-- >= t && (cursor.getNext(key, data, LockMode.DEFAULT) 
+								  == OperationStatus.SUCCESS)) {
 				//System.out.println(" delete triple");
 				cursor.delete();
 			}

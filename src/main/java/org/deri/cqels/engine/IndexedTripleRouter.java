@@ -1,15 +1,12 @@
 package org.deri.cqels.engine;
 
 import java.util.HashMap;
-import java.util.Timer;
-import java.util.TimerTask;
 
-import org.deri.cqels.data.HashMapping;
 import org.deri.cqels.data.EnQuad;
+import org.deri.cqels.data.HashMapping;
 import org.deri.cqels.data.Mapping;
 import org.deri.cqels.engine.iterator.MappingIterator;
 import org.deri.cqels.lang.cqels.OpStream;
-import org.hamcrest.core.IsInstanceOf;
 
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.sparql.algebra.op.OpTriple;

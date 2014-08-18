@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Properties;
-import java.util.concurrent.TimeUnit;
 
 import org.deri.cqels.lang.cqels.ParserCQELS;
 
@@ -26,8 +25,6 @@ import com.hp.hpl.jena.tdb.solver.OpExecutorTDB;
 import com.hp.hpl.jena.tdb.store.DatasetGraphTDB;
 import com.hp.hpl.jena.tdb.store.bulkloader.BulkLoader;
 import com.hp.hpl.jena.tdb.sys.SystemTDB;
-import com.hp.hpl.jena.tdb.transaction.DatasetGraphTransaction;
-
 import com.sleepycat.je.Environment;
 import com.sleepycat.je.EnvironmentConfig;
 /** 
@@ -58,9 +55,12 @@ public class ExecContext {
 	public ExecContext(String path, boolean cleanDataset) {
 		this.hashMap = new HashMap<String, Object>();
 		//combine cache and disk-based dictionary
+//		this.dictionary = new NodeTableNative(IndexBuilder.mem().newIndex(FileSet.mem(), 
+//											  		SystemTDB.nodeRecordFactory), 
+//											  FileFactory.createObjectFileMem(path));
 		this.dictionary = new NodeTableNative(IndexBuilder.mem().newIndex(FileSet.mem(), 
-											  		SystemTDB.nodeRecordFactory), 
-											  FileFactory.createObjectFileMem(path));
+		  						SystemTDB.nodeRecordFactory), 
+		  						FileFactory.createObjectFileMem());		
 		setEngine(new CQELSEngine(this));
 		createCache(path + "/cache");
 		if (cleanDataset) {
@@ -107,7 +107,8 @@ public class ExecContext {
 	 * @param location the specified location string
 	 */
 	public void createDataSet(String location) {
-		this.dataset = ((DatasetGraphTransaction)TDBFactory.createDatasetGraph(location)).getBaseDatasetGraph();
+		//this.dataset = ((DatasetGraphTransaction)TDBFactory.createDatasetGraph(location)).getDatasetGraphToQuery();
+		this.dataset = TDBFactory.createDatasetGraph(location);
 		this.arqExCtx = new ExecutionContext(this.dataset.getContext(), 
 											this.dataset.getDefaultGraph(), 
 											this.dataset, OpExecutorTDB.OpExecFactoryTDB);
@@ -128,7 +129,8 @@ public class ExecContext {
 	 * @param dataUri 
 	 */
 	public void loadDefaultDataset(String dataUri) {
-		BulkLoader.loadDefaultGraph(this.dataset, Arrays.asList(dataUri) , true);
+		BulkLoader.loadDefaultGraph(this.dataset, Arrays.asList(dataUri) , false);
+		
 	}
 	
 	/**
@@ -200,7 +202,8 @@ public class ExecContext {
 	 */
 	public void initTDBGraph(String directory) { 
 		//this.dataset = TDBFactory.createDatasetGraph(directory);
-		this.dataset = ((DatasetGraphTransaction)TDBFactory.createDatasetGraph(location)).getBaseDatasetGraph();
+		//this.dataset = ((DatasetGraphTransaction)TDBFactory.createDatasetGraph(location)).getBaseDatasetGraph();
+		this.dataset = TDBFactory.createDatasetGraph(directory);
 	}
 	
 	/**

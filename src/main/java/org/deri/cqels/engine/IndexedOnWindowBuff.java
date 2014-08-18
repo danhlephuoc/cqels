@@ -1,7 +1,6 @@
 package org.deri.cqels.engine;
 
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 import org.deri.cqels.data.EnQuad;
 import org.deri.cqels.data.Mapping;
@@ -110,6 +109,7 @@ public class IndexedOnWindowBuff {
 			out.writeLong(enQuad.getOID());
 		}
 		buff.put(null, key, new DatabaseEntry(out.getBufferBytes()));
+		//System.out.println("Buff's count: " + buff.count());
 	}
 	
 	public MappingIterator search4MatchMapping(Mapping mapping) {
