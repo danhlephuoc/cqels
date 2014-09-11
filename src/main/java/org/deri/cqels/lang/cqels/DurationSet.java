@@ -7,6 +7,12 @@ public class DurationSet {
 	public DurationSet(){
 		durations= new ArrayList<Duration>();
 	}
+        
+        public DurationSet(long nanoTime) {
+            this();
+            add(new Duration(nanoTime));
+        }
+        
 	public  void add(Duration duration){
 		durations.add(duration);
 	}

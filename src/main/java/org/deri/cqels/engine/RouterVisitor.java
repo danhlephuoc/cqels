@@ -2,6 +2,8 @@ package org.deri.cqels.engine;
 
 public interface RouterVisitor {
 	public void visit(JoinRouter router);
+        public void visit(UnionRouter router);
+        public void visit(RefreshableBDBGraphPatternRouter router);
 	public void visit(IndexedTripleRouter router);
 	public void visit(ProjectRouter router);
 	public void visit(ThroughRouter router);
