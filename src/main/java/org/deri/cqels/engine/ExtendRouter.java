@@ -2,7 +2,6 @@ package org.deri.cqels.engine;
 
 import com.hp.hpl.jena.sparql.algebra.op.OpExtend;
 import com.hp.hpl.jena.sparql.core.VarExprList;
-
 import org.deri.cqels.data.ExtendMapping;
 import org.deri.cqels.data.Mapping;
 import org.deri.cqels.engine.iterator.MappingIterExtendOp;

@@ -11,7 +11,6 @@ import org.deri.cqels.engine.iterator.MappingIterCursorByRangeKey;
 import org.deri.cqels.engine.iterator.MappingIterator;
 import org.deri.cqels.engine.iterator.NullMappingIter;
 
-import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.sparql.algebra.Op;
 import com.hp.hpl.jena.sparql.core.DatasetGraph;
 import com.hp.hpl.jena.sparql.core.Var;
@@ -240,6 +239,6 @@ public class BDBGraphPatternRouter extends OpRouterBase {
 	}
 
 	public void visit(RouterVisitor rv) {
-		rv.visit(this);
+            rv.visit(this);
 	}
 }
