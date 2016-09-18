@@ -1,5 +1,5 @@
 # cqels
-This project is automatically exported from code.google.com/p/cqels. The code is for the engine built in 2011 for my paper in ISWC 2011[1]. 
+This project is automatically exported from code.google.com/p/cqels(LGPL license). The code is for the engine built in 2011 for my paper in ISWC 2011[1]. 
 The performance of this engine is not representative for latest version of CQELS engine. I have better results in the paper[2], however, 
 I am not able to release the source code of this version of engine. Aiming to have open source Polygot CQELS engines (preferably Apache 2.0), 
 
